@@ -4,9 +4,8 @@ import { typeDefs } from "./schema";
 import { addMocksToSchema } from "@graphql-tools/mock";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 
-
 const mocks = {
-     Query: () => ({
+  Query: () => ({
     tracksForHome: () => [...new Array(6)],
   }),
   Track: () => ({
@@ -26,17 +25,23 @@ const mocks = {
     modulesCount: () => 6,
   }),
 };
-async function startApolloserver() {
-    const server = new ApolloServer({
-        schema: addMocksToSchema({
-            schema: makeExecutableSchema({typeDefs }),
-            mocks
-        })
-    });
-    const {url} = await startStandaloneServer(server);
-    console.log("Server is running on: ", url)
+
+async function startApolloServer() {
+  const server = new ApolloServer({
+    schema: addMocksToSchema({
+      schema: makeExecutableSchema({ typeDefs }),
+      mocks,
+    }),
+  });
+  const port = Number(process.env.PORT ?? 4000);
+  const { url } = await startStandaloneServer(server, {
+    listen: { port },
+  });
+
+  console.log(`Server is running at ${url}`);
 }
 
-startApolloserver();
-
-  
+startApolloServer().catch((error: unknown) => {
+  console.error("Failed to start the GraphQL server:", error);
+  process.exitCode = 1;
+});

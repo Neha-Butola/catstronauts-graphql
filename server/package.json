@@ -2,14 +2,18 @@
   "name": "catstronauts-server-complete",
   "version": "1.0.0",
   "description": "back-end demo app for Apollo's lift-off course",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "nodemon src/index"
+    "start": "tsx src/index.ts",
+    "dev": "nodemon --watch src --ext ts --exec tsx src/index.ts",
+    "build": "tsc -p tsconfig.json"
   },
-  "dependencies": {},
   "devDependencies": {
     "dotenv": "^16.4.0",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "typescript": "^5.9.3",
+    "tsx": "^4.20.6",
+    "@types/node": "^22.19.0"
   },
   "engines": {
     "node": ">=20"
